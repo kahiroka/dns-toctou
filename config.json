@@ -1,0 +1,22 @@
+{
+    "host": "0.0.0.0",
+    "port": 53,
+    "upstream_dns": "8.8.8.8",
+    "domains": [
+        {
+            "domain": ".foo.io",
+            "ipaddrs": ["192.168.0.1"],
+            "pause": false
+        },
+        {
+            "domain": "pass_to_upstrean.bar.io",
+            "ipaddrs": [],
+            "pause": false
+        },
+        {
+            "domain": ".baz.io",
+            "ipaddrs": ["192.168.0.2"],
+            "pause": true
+        }
+    ]
+}
