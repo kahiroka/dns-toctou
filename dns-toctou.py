@@ -54,16 +54,22 @@ class DNSServer:
                 pause = record['pause']
                 break
 
+        offset = 0
+        if pause:
+            ret = input("Press Enter or input answer offset: ")
+            try:
+                offset = int(ret)
+            except ValueError:
+                offset = 0
+
         if len(ipaddrs) != 0: 
-            response_data = ipaddrs
+            response_data = ipaddrs[offset:]
+            print(f"Responding to query for {domain_name} with {response_data}")
             response = self.build_response(transaction_id, domain_name, response_data)
         else:
             # forward to upstream DNS
             print(f"Forwarding query for {domain_name} to upstream DNS")
             response = self.forward_to_upstream(data)
-
-        if pause:
-            input("Press Enter to continue...")
 
         # response to client
         self.sock.sendto(response, addr)
