@@ -14,10 +14,14 @@ class DNSServer:
             file = config
         self.debug = debug
 
-        with open(file) as f:
-            self.config = json.load(f)
-            if self.debug:
-                print(json.dumps(self.config, indent=4))
+        try:
+            with open(file) as f:
+                self.config = json.load(f)
+                if self.debug:
+                    print(json.dumps(self.config, indent=4))
+        except FileNotFoundError:
+            print(f"Config file {file} not found")
+            exit(1)
 
     def handle_query(self, data, addr):
         # analyze DNS header
