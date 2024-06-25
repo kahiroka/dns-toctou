@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Author: Human beings feat. ChatGPT
+# Author: Human beings feat. ChatGPT with GitHub Copilot
 import socket
 import struct
 import os
@@ -77,7 +77,7 @@ class DNSServer:
     def build_response(self, transaction_id, domain_name, response_data):
         flags = 0x8180  # standard query response, no error
         qdcount = 1
-        ancount = len(response_data) + 100
+        ancount = len(response_data)
         nscount = 0
         arcount = 0
 
