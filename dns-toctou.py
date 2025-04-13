@@ -5,6 +5,7 @@ import struct
 import os
 import json
 import argparse
+import subprocess
 
 class DNSServer:
     def __init__(self, config=None, debug=False):
@@ -13,6 +14,7 @@ class DNSServer:
         else:
             file = config
         self.debug = debug
+        self.flag = False
 
         try:
             with open(file) as f:
@@ -45,13 +47,24 @@ class DNSServer:
 
         ipaddrs = []
         pause = False
+        cond = False
+        flag = False
+        execs = []
         response = b''
         # check if domain is in the list
         for record in self.config['domains']:
             if domain_name.endswith(record['domain']):
-                print(record)
+                if self.debug:
+                    print(record)
                 ipaddrs = record['ipaddrs']
-                pause = record['pause']
+                if 'pause' in record:
+                    pause = record['pause']
+                if 'cond' in record:
+                    cond = record['cond']
+                if 'flag' in record:
+                    flag = record['flag']
+                if 'execs' in record:
+                    execs = record['execs']
                 break
 
         offset = 0
@@ -61,6 +74,18 @@ class DNSServer:
                 offset = int(ret)
             except ValueError:
                 offset = 0
+
+        if (not cond) or (cond and self.flag):
+            if len(execs) != 0:
+                print(execs[0])
+                result = subprocess.run([execs[offset]], shell=True, capture_output=True, text=True)
+                print(result.stdout)
+
+        if cond and self.flag:
+            self.flag = False
+
+        if flag:
+            self.flag = True
 
         if len(ipaddrs) != 0: 
             response_data = ipaddrs[offset:]

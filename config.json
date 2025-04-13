@@ -6,17 +6,18 @@
         {
             "domain": ".foo.io",
             "ipaddrs": ["192.168.0.1"],
-            "pause": false
+            "flag": true
         },
         {
-            "domain": "pass_to_upstrean.bar.io",
-            "ipaddrs": [],
-            "pause": false
-        },
-        {
-            "domain": ".baz.io",
-            "ipaddrs": ["192.168.0.2"],
+            "domain": "wait_user_input.bar.io",
+            "ipaddrs": ["192.168.0.2","192.168.0.3"],
             "pause": true
+        },
+        {
+            "domain": "exec_after_flag.baz.io",
+            "ipaddrs": ["192.168.0.4"],
+            "cond": true,
+            "execs": ["echo after foo"]
         }
     ]
 }
